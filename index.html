@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Угадай число</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Игра: Компьютер угадывает Ваше число</h1>
+    <div>
+        <label for="min">Минимум:</label>
+        <input type="number" id="min" value="0"><br><br>
+        <label for="max">Максимум:</label>
+        <input type="number" id="max" value="100"><br><br>
+        <button id="startBtn">Начать игру</button>
+    </div>
+
+    <h2 id="questionText"></h2>
+    <button id="lessBtn" style="display:none;">Меньше</button>
+    <button id="greaterBtn" style="display:none;">Больше</button>
+    <button id="resetBtn" style="display:none;">Заново</button>
+
+    <script>
+        let min, max, answerNumber, questionsCount;
+
+        document.getElementById('startBtn').onclick = function() {
+            min = parseInt(document.getElementById('min').value);
+            max = parseInt(document.getElementById('max').value);
+            questionsCount = 0;
+            startGame();
+        };
+
+        function startGame() {
+            answerNumber = Math.floor((min + max) / 2);
+            questionsCount++;
+            document.getElementById('questionText').innerText = `Компьютер думает, что это число ${answerNumber}. Это число больше или меньше?`;
+            document.getElementById('lessBtn').style.display = 'inline-block';
+            document.getElementById('greaterBtn').style.display = 'inline-block';
+            document.getElementById('resetBtn').style.display = 'none';
+        }
+
+        document.getElementById('lessBtn').onclick = function() {
+            max = answerNumber - 1;
+            askQuestion();
+        };
+
+        document.getElementById('greaterBtn').onclick = function() {
+            min = answerNumber + 1;
+            askQuestion();
+        };
+
+        function askQuestion() {
+            if (min <= max) {
+                answerNumber = Math.floor((min + max) / 2);
+                questionsCount++;
+                document.getElementById('questionText').innerText = `Компьютер думает, что это число ${answerNumber}. Это число больше или меньше?`;
+            } else {
+                document.getElementById('questionText').innerText = `Компьютер не может угадать Ваше число!`;
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('lessBtn').style.display = 'none';
+            document.getElementById('greaterBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'inline-block';
+        }
+
+        document.getElementById('resetBtn').onclick = function() {
+            document.getElementById('min').value = 0;
+            document.getElementById('max').value = 100;
+            document.getElementById('questionText').innerText = '';
+            this.style.display = 'none';
+        };
+    </script>
+</body>
+</html>
